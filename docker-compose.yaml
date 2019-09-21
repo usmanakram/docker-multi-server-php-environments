@@ -2,9 +2,9 @@ version: '3'
 
 services:
   # Database
-  db:
-    container_name: mysql5.7
-    image: mysql:5.7
+  mariadb:
+    container_name: mariadb
+    image: mariadb
     volumes:
       - ./database:/var/lib/mysql
     restart: always
@@ -19,13 +19,13 @@ services:
   phpmyadmin:
     container_name: phpmyadmin
     depends_on:
-      - db
+      - mariadb
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
       - '8080:80'
     environment:
-      PMA_HOST: db
+      PMA_HOST: mariadb
       MYSQL_ROOT_PASSWORD: password
     networks:
       - multiserver
@@ -33,7 +33,7 @@ services:
   php7.3:
     container_name: php7.3
     depends_on:
-      - db
+      - mariadb
     # image: php:7.3-apache
     image: usmana/php:7.3
     # build:
@@ -50,7 +50,7 @@ services:
   php5.6:
     container_name: php5.6
     depends_on:
-      - db
+      - mariadb
     # image: php:5.6-apache
     image: usmana/php:5.6
     # build:
